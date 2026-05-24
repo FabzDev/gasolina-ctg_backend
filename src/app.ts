@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
+import authRoutes from './routes/auth.routes';
 import stationsRoutes from './routes/stations.routes';
 import priceReportsRoutes from './routes/priceReports.routes';
 
@@ -15,8 +16,8 @@ app.get('/', (req, res) => {
   });
 });
 
+app.use('/api/auth', authRoutes);
 app.use('/api/stations', stationsRoutes);
-
 app.use('/api/price-reports', priceReportsRoutes);
 
 export default app;
