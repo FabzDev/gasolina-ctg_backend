@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../db/gasolinaCTG.db';
+import { AuthRequest } from '../middlewares/auth.middleware';
 
 export const getReports = async (req: Request, res: Response) => {
     try {
@@ -32,15 +33,11 @@ export const getReports = async (req: Request, res: Response) => {
     }
 };
 
-
-export const createReport = async (req: Request, res: Response) => {
+export const createReport = async (req: AuthRequest, res: Response) => {
     try {
-        const { 
-          gas_station_id,
-          fuel_type_id,
-          user_id,
-          price
-        } = req.body;
+        const user_id = req.user.id;
+
+        const { gas_station_id, fuel_type_id, price } = req.body;
 
         // VALIDACIÓN SUPER BÁSICA
         if (!gas_station_id || !fuel_type_id || !user_id || !price) {
@@ -58,9 +55,9 @@ export const createReport = async (req: Request, res: Response) => {
         user_id,
         price
       )
-      VALUES ($1,$2,$3,$4)
+      VALUES ($1, $2, $3, $4)
       RETURNING *
-    `,
+      `,
             [gas_station_id, fuel_type_id, user_id, price],
         );
 
