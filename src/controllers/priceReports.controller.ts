@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import db from '../db/gasolinaCTG.db';
 import { AuthRequest } from '../middlewares/auth.middleware';
+import { checkAutoApproval } from '../services/priceApproval.service';
 
 export const getReports = async (req: Request, res: Response) => {
     try {
@@ -49,17 +50,24 @@ export const createReport = async (req: AuthRequest, res: Response) => {
 
         const result = await db.query(
             `
-      INSERT INTO price_reports (
-        gas_station_id,
-        fuel_type_id,
-        user_id,
-        price
-      )
-      VALUES ($1, $2, $3, $4)
-      RETURNING *
+                INSERT INTO price_reports (
+                    gas_station_id,
+                    fuel_type_id,
+                    user_id,
+                    price
+                )
+                VALUES ($1, $2, $3, $4)
+                RETURNING *
       `,
             [gas_station_id, fuel_type_id, user_id, price],
         );
+
+        // AUTO APPROVAL CHECK
+        await checkAutoApproval(
+            gas_station_id,
+            fuel_type_id,
+            price
+        );    
 
         res.status(201).json({
             success: true,

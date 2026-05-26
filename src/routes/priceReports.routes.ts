@@ -5,7 +5,7 @@ import { authorizeRoles } from '../middlewares/role.middleware';
 
 const router = Router();
 
-router.get('/', getReports);
-router.post('/', authenticateToken, authorizeRoles('user', 'admin'), createReport);
+router.get('/', authorizeRoles('admin'), getReports);
+router.post('/', authenticateToken, authorizeRoles('user','admin'), createReport);
 
 export default router;
