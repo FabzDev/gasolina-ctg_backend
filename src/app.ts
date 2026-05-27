@@ -2,9 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import authRoutes from './routes/auth.routes';
-import stationsRoutes from './routes/stations.routes';
-import priceReportsRoutes from './routes/priceReports.routes';
-import adminRoutes from './routes/admin.routes';
+import reportsRoutes from './routes/reports.routes';
 
 const app = express();
 
@@ -18,8 +16,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/stations', stationsRoutes);
-app.use('/api/price-reports', priceReportsRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/reports', reportsRoutes);
 
 export default app;

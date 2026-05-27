@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getReports, createReport } from '../controllers/priceReports.controller';
+import { getReports, createReport } from '../controllers/reports.controller';
 import { authenticateToken } from '../middlewares/auth.middleware';
 import { authorizeRoles } from '../middlewares/role.middleware';
 
